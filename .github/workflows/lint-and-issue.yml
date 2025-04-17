@@ -29,7 +29,7 @@ jobs:
           echo "ESLINT_OUTPUT<<EOF" >> $GITHUB_ENV
           cat eslint_output.txt >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Create Issue on Lint Fail
         if: steps.lint.outputs.exit_code != '0'
@@ -40,8 +40,8 @@ jobs:
             const issueTitle = `ESLint Error Found from Student ${process.env.STUDENT_ID} - ${process.env.STUDENT_NAME}`
             const issueBody = `**Student Name:** ${process.env.STUDENT_NAME} **Student ID:** ${process.env.STUDENT_ID}  **What I did to break it:** ${process.env.BREAK_REASON} **ESLint Output:*${process.env.ESLINT_OUTPUT}`;
             await github.rest.issues.create({
-              owner: "Walterwilly", // ✅ Replace with your username
-              repo: "ci-cd-homework", // ✅ Replace with your repo name
+              owner: "Walterwilly",
+              repo: "ci-cd-homework", 
               title: issueTitle,
               body: issueBody,
             });
