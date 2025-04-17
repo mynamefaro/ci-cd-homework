@@ -25,8 +25,8 @@ jobs:
         id: lint
         run: |
         	ESLINT_OUTPUT = $(npx eslint .)
-          echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
-          echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
+          	echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
+          	echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
 
 
       - name: Create Issue on Lint Fail
