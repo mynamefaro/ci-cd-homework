@@ -24,6 +24,7 @@ jobs:
       - name: Run ESLint and capture output
         id: lint
         run: |
+	set -o pipefail
         	npx eslint . > eslint_output.txt 2>&1 || echo $? > exit_code.txt
         	echo "exit_code=$(cat exit_code.txt || echo 0)" >> $GITHUB_OUTPUT
        	echo "eslint_output<<EOF" >> $GITHUB_OUTPUT
