@@ -24,12 +24,11 @@ jobs:
       - name: Run ESLint and capture output
         id: lint
         run: |
-          npx eslint . > eslint_output.txt
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-          echo "ESLINT_OUTPUT<<EOF" >> $GITHUB_ENV
-          cat eslint_output.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-        continue-on-error: false
+        npx eslint . > eslint_output.txt 2>&1 || echo $? > exit_code.txt
+        echo "exit_code=$(cat exit_code.txt || echo 0)" >> $GITHUB_OUTPUT
+        echo "eslint_output<<EOF" >> $GITHUB_OUTPUT
+        cat eslint_output.txt >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Issue on Lint Fail
         if: steps.lint.outputs.exit_code != '0'
