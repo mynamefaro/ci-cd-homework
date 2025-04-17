@@ -38,25 +38,7 @@ jobs:
           github-token: ${{ secrets.UPSTREAM_TOKEN }}
           script: |
             const issueTitle = `ESLint Error Found from Student ${process.env.STUDENT_ID} - ${process.env.STUDENT_NAME}`
-            const issueBody = `
-**Student Name:** ${process.env.STUDENT_NAME}
-**Student ID:** ${process.env.STUDENT_ID}
-
----
-
-🧨 **What I did to break it:**
-
-${process.env.BREAK_REASON}
-
----
-
-📋 **ESLint Output:**
-
-\`\`\`
-${process.env.ESLINT_OUTPUT}
-\`\`\`
-            `;
-
+            const issueBody = `**Student Name:** ${process.env.STUDENT_NAME} **Student ID:** ${process.env.STUDENT_ID}  **What I did to break it:** ${process.env.BREAK_REASON} **ESLint Output:*${process.env.ESLINT_OUTPUT}`;
             await github.rest.issues.create({
               owner: "Walterwilly", // ✅ Replace with your username
               repo: "ci-cd-homework", // ✅ Replace with your repo name
