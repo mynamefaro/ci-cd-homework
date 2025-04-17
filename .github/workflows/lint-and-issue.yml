@@ -24,8 +24,7 @@ jobs:
       - name: Run ESLint and capture output
         id: lint
         run: |
-        	ESLINT_OUTPUT = $(npx eslint .)
-          	echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
+        	npx eslint .
           	echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
 
 
