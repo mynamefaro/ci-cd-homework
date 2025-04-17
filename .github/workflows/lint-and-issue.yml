@@ -25,11 +25,8 @@ jobs:
         id: lint
         run: ESLINT_OUTPUT=$(npx eslint .) && echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV && echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
 
-      - name: Print ESLint Output
-        run: echo "${{ env.ESLINT_OUTPUT }}"
-
       - name: Create Issue on Lint Fail
-        if: steps.lint.outputs.EXIT_CODE != '0'
+        if: failure()
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.UPSTREAM_TOKEN }}
