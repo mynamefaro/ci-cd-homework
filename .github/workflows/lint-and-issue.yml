@@ -23,9 +23,7 @@ jobs:
 
       - name: Run ESLint and capture output
         id: lint
-        run: npx eslint .
-        run: echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
-        run: echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
+        run: ESLINT_OUTPUT=$(npx eslint .) && echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV && echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
 
       - name: Create Issue on Lint Fail
         if: steps.lint.outputs.EXIT_CODE != '0'
