@@ -25,20 +25,20 @@ jobs:
         id: lint
         run: |
         	npx eslint .
-          	echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
-
+          echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
+          echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
 
       - name: Create Issue on Lint Fail
         if: steps.lint.outputs.EXIT_CODE != '0'
         uses: actions/github-script@v6
         with:
-          	github-token: ${{ secrets.UPSTREAM_TOKEN }}
-          	script: |
-            		const issueTitle = `ESLint Error Found from Student ${process.env.STUDENT_ID} - ${process.env.STUDENT_NAME}`
-            		const issueBody = `**Student Name:** ${process.env.STUDENT_NAME} **Student ID:** ${process.env.STUDENT_ID}  **What I did to break it:** ${process.env.BREAK_REASON} **ESLint Output:*${process.env.ESLINT_OUTPUT}`;
-            		await github.rest.issues.create({
-              			owner: "Walterwilly",
-              			repo: "ci-cd-homework", 
-              			title: issueTitle,
-              			body: issueBody,
-            		});
+          github-token: ${{ secrets.UPSTREAM_TOKEN }}
+          script: |
+            const issueTitle = `ESLint Error Found from Student ${process.env.STUDENT_ID} - ${process.env.STUDENT_NAME}`
+            const issueBody = `**Student Name:** ${process.env.STUDENT_NAME} **Student ID:** ${process.env.STUDENT_ID}  **What I did to break it:** ${process.env.BREAK_REASON} **ESLint Output:*${process.env.ESLINT_OUTPUT}`;
+            await github.rest.issues.create({
+                owner: "Walterwilly",
+                repo: "ci-cd-homework", 
+                title: issueTitle,
+                body: issueBody,
+            });
