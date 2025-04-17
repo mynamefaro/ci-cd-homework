@@ -2,6 +2,9 @@ name: Lint Check and Issue Reporter
 
 on: [push, pull_request]
 
+permissions:
+  issues: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
