@@ -1,6 +1,0 @@
-
-C:\Users\nobig\Desktop\CU\SoftwareEng2\ci-cd-homework\main.js
-  2:17  error  'msg' is not defined  no-undef
-
-✖ 1 problem (1 error, 0 warnings)
-

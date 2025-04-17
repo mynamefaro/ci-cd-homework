@@ -24,15 +24,13 @@ jobs:
       - name: Run ESLint and capture output
         id: lint
         run: |
-	set -o pipefail
-        	npx eslint . > eslint_output.txt 2>&1 || echo $? > exit_code.txt
-        	echo "exit_code=$(cat exit_code.txt || echo 0)" >> $GITHUB_OUTPUT
-       	echo "eslint_output<<EOF" >> $GITHUB_OUTPUT
-        	cat eslint_output.txt >> $GITHUB_OUTPUT
-        	echo "EOF" >> $GITHUB_OUTPUT
+        	ESLINT_OUTPUT = $(npx eslint .)
+          echo "ESLINT_OUTPUT=$ESLINT_OUTPUT" >> $GITHUB_ENV 
+          echo "EXIT_CODE=$?" >> $GITHUB_OUTPUT
+
 
       - name: Create Issue on Lint Fail
-        if: steps.lint.outputs.exit_code != '0'
+        if: steps.lint.outputs.EXIT_CODE != '0'
         uses: actions/github-script@v6
         with:
           	github-token: ${{ secrets.UPSTREAM_TOKEN }}
