@@ -1,6 +1,5 @@
 const helloWorld = () => {
-    const msg = "hello"
-    	console.log(msg)
+    console.log(msg)
 }
 
 helloWorld()
