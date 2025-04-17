@@ -1,0 +1,65 @@
+name: Lint Check and Issue Reporter
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      STUDENT_NAME: "Your Name"
+      STUDENT_ID: "Your Student ID"
+      BREAK_REASON: "I removed all semicolons and used var instead of let."
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint and capture output
+        id: lint
+        run: |
+          npx eslint . > eslint_output.txt
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+          echo "ESLINT_OUTPUT<<EOF" >> $GITHUB_ENV
+          cat eslint_output.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        continue-on-error: true
+
+      - name: Create Issue on Lint Fail
+        if: steps.lint.outputs.exit_code != '0'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.UPSTREAM_TOKEN }}
+          script: |
+            const issueTitle = `ESLint Error Found from Student ${process.env.STUDENT_ID} - ${process.env.STUDENT_NAME}`
+            const issueBody = `
+**Student Name:** ${process.env.STUDENT_NAME}
+**Student ID:** ${process.env.STUDENT_ID}
+
+---
+
+🧨 **What I did to break it:**
+
+${process.env.BREAK_REASON}
+
+---
+
+📋 **ESLint Output:**
+
+\`\`\`
+${process.env.ESLINT_OUTPUT}
+\`\`\`
+            `;
+
+            await github.rest.issues.create({
+              owner: "Walterwilly", // ✅ Replace with your username
+              repo: "ci-cd-homework", // ✅ Replace with your repo name
+              title: issueTitle,
+              body: issueBody,
+            });
